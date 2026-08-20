@@ -1,0 +1,1 @@
+# san-jose-asistencia-qr-2026
