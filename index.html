@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -16,6 +17,7 @@
   </script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -29,7 +31,7 @@
 
     .contenedor {
       width: 100%;
-      max-width: 620px;
+      max-width: 650px;
       margin: auto;
       padding: 18px;
     }
@@ -37,32 +39,52 @@
     .encabezado {
       background: #174a7c;
       color: white;
-      padding: 24px 18px;
       border-radius: 18px;
+      padding: 22px;
       text-align: center;
       margin-bottom: 18px;
     }
 
     .encabezado h1 {
       margin: 0;
-      font-size: 27px;
+      font-size: 28px;
     }
 
     .encabezado p {
-      margin: 8px 0 0;
+      margin: 7px 0 0;
       line-height: 1.5;
     }
 
     .tarjeta {
       background: white;
       border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.09);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow:
+        0 5px 20px rgba(0,0,0,.09);
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccd5df;
+      border-radius: 10px;
+      font-size: 17px;
+      background: white;
     }
 
     button {
       width: 100%;
       padding: 17px;
+      margin-top: 18px;
       border: none;
       border-radius: 12px;
       background: #174a7c;
@@ -76,11 +98,10 @@
       opacity: .55;
     }
 
-    #estado {
+    #estadoCamara {
       text-align: center;
-      margin: 18px 0;
       font-weight: bold;
-      font-size: 17px;
+      margin: 15px 0;
     }
 
     #reader {
@@ -94,103 +115,277 @@
       margin-top: 18px;
       padding: 20px;
       border-radius: 15px;
-      background: #e8f6ec;
-      border: 2px solid #2e8b57;
       text-align: center;
     }
 
-    #resultado .titulo {
-      font-size: 20px;
-      font-weight: bold;
+    .resultado-verde {
+      display: block !important;
+      background: #e4f7e9;
+      border: 2px solid #27894c;
+      color: #145c30;
     }
 
-    #token {
-      margin-top: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      word-break: break-all;
+    .resultado-naranja {
+      display: block !important;
+      background: #fff4df;
+      border: 2px solid #df8b16;
+      color: #744509;
     }
 
-    .error {
-      color: #b42318;
+    .resultado-amarillo {
+      display: block !important;
+      background: #fff8cf;
+      border: 2px solid #c69b00;
+      color: #685200;
+    }
+
+    .resultado-rojo {
+      display: block !important;
+      background: #fde8e8;
+      border: 2px solid #c93d3d;
+      color: #7b1e1e;
+    }
+
+    .estado-grande {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 9px;
+    }
+
+    .nombre {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .detalle {
+      font-size: 17px;
+      margin-top: 5px;
+    }
+
+    .procesando {
+      color: #9a6200;
     }
 
     .activo {
-      color: #18864b;
+      color: #197840;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
 <div class="contenedor">
 
+
   <div class="encabezado">
+
     <h1>ASISTENCIA QR</h1>
 
     <p>
-      Institución Educativa San José<br>
+      Institución Educativa San José
+      <br>
       Oporapa - Huila
     </p>
+
   </div>
+
 
   <div class="tarjeta">
 
+    <label>
+      Tablet
+    </label>
+
+    <select id="tablet">
+
+      <option value="TABLET-01">
+        TABLET-01
+      </option>
+
+      <option value="TABLET-02">
+        TABLET-02
+      </option>
+
+      <option value="TABLET-03">
+        TABLET-03
+      </option>
+
+      <option value="TABLET-04">
+        TABLET-04
+      </option>
+
+    </select>
+
+
+    <label>
+      Monitor responsable
+    </label>
+
+    <input
+      id="monitor"
+      type="text"
+      placeholder="Nombre del monitor"
+      autocomplete="off"
+    >
+
+
+    <label>
+      PIN del sistema
+    </label>
+
+    <input
+      id="pin"
+      type="password"
+      inputmode="numeric"
+      placeholder="Digite el PIN"
+      autocomplete="off"
+    >
+
+
     <button
       id="btnCamara"
-      onclick="iniciarCamara()">
-      INICIAR CÁMARA
+      onclick="iniciarCamara()"
+    >
+      INICIAR ESCÁNER
     </button>
 
-    <div id="estado">
+  </div>
+
+
+  <div class="tarjeta">
+
+    <div id="estadoCamara">
       Cámara detenida
     </div>
 
     <div id="reader"></div>
 
-    <div id="resultado">
-
-      <div class="titulo">
-        CÓDIGO QR LEÍDO
-      </div>
-
-      <div id="token"></div>
-
-    </div>
+    <div id="resultado"></div>
 
   </div>
 
 </div>
 
+
+<!--
+FORMULARIO OCULTO
+-->
+
+<form
+  id="formRegistro"
+  method="POST"
+  target="respuestaBackend"
+  action="https://script.google.com/macros/s/AKfycbyIEJ1RK9NkNueGqMbEoC1dCgASGjliM1mTCpU3yaBtTGbSoSY0es2OW7jwVkHRjeviYw/exec"
+  style="display:none;"
+>
+
+  <input
+    id="fToken"
+    name="token"
+    type="hidden"
+  >
+
+  <input
+    id="fTablet"
+    name="tablet"
+    type="hidden"
+  >
+
+  <input
+    id="fMonitor"
+    name="monitor"
+    type="hidden"
+  >
+
+  <input
+    id="fPin"
+    name="pin"
+    type="hidden"
+  >
+
+</form>
+
+
+<iframe
+  name="respuestaBackend"
+  style="display:none;">
+</iframe>
+
+
 <script>
 
   let lector = null;
-  let iniciado = false;
+
+  let camaraIniciada = false;
+
+  let procesando = false;
+
   let ultimoToken = "";
+
   let ultimaLectura = 0;
+
 
   async function iniciarCamara() {
 
-    if (iniciado) {
+    const monitor =
+      document
+        .getElementById("monitor")
+        .value
+        .trim();
+
+    const pin =
+      document
+        .getElementById("pin")
+        .value
+        .trim();
+
+
+    if (!monitor) {
+
+      mostrarError(
+        "Debe escribir el nombre del monitor."
+      );
+
       return;
     }
 
-    const estado =
-      document.getElementById("estado");
 
-    const boton =
-      document.getElementById("btnCamara");
+    if (!pin) {
+
+      mostrarError(
+        "Debe digitar el PIN del sistema."
+      );
+
+      return;
+    }
+
+
+    if (camaraIniciada) {
+      return;
+    }
+
+
+    const estado =
+      document.getElementById(
+        "estadoCamara"
+      );
+
 
     estado.className = "";
+
     estado.innerText =
       "Solicitando permiso para utilizar la cámara...";
 
-    boton.disabled = true;
 
     try {
 
       lector =
         new Html5Qrcode("reader");
+
 
       await lector.start(
 
@@ -207,74 +402,419 @@
           }
         },
 
-        function(codigo) {
-
-          const token =
-            String(codigo || "")
-              .trim()
-              .toUpperCase();
-
-          const ahora =
-            Date.now();
-
-          if (
-            token === ultimoToken &&
-            ahora - ultimaLectura < 5000
-          ) {
-            return;
-          }
-
-          ultimoToken = token;
-          ultimaLectura = ahora;
-
-          document
-            .getElementById("token")
-            .innerText = token;
-
-          document
-            .getElementById("resultado")
-            .style.display = "block";
-
-          estado.className =
-            "activo";
-
-          estado.innerText =
-            "Cámara activa - QR detectado";
-        },
+        codigoDetectado,
 
         function() {
-          // Los intentos normales de lectura se ignoran.
         }
 
       );
 
-      iniciado = true;
 
-      boton.style.display =
-        "none";
+      camaraIniciada = true;
+
+
+      document
+        .getElementById("btnCamara")
+        .style.display = "none";
+
 
       estado.className =
         "activo";
 
+
       estado.innerText =
-        "Cámara activa - acerque el código QR";
+        "ESCÁNER ACTIVO - Acerque el código QR";
+
 
     } catch (error) {
 
       console.error(error);
 
-      boton.disabled = false;
 
-      estado.className =
-        "error";
+      mostrarError(
+        "No fue posible abrir la cámara."
+      );
 
-      estado.innerHTML =
-        "No fue posible abrir la cámara.<br>" +
-        "Revise los permisos de cámara del navegador.";
+
+      estado.innerText =
+        "Revise los permisos de cámara.";
+
     }
+
+  }
+
+
+
+  function codigoDetectado(codigo) {
+
+    const token =
+      String(codigo || "")
+        .trim()
+        .toUpperCase();
+
+
+    if (!token.startsWith("SJ-")) {
+
+      mostrarError(
+        "Este código QR no pertenece al sistema."
+      );
+
+      return;
+    }
+
+
+    const ahora =
+      Date.now();
+
+
+    if (
+      token === ultimoToken &&
+      ahora - ultimaLectura < 8000
+    ) {
+
+      return;
+    }
+
+
+    if (procesando) {
+      return;
+    }
+
+
+    procesando = true;
+
+    ultimoToken = token;
+
+    ultimaLectura = ahora;
+
+
+    const tablet =
+      document
+        .getElementById("tablet")
+        .value;
+
+
+    const monitor =
+      document
+        .getElementById("monitor")
+        .value
+        .trim();
+
+
+    const pin =
+      document
+        .getElementById("pin")
+        .value
+        .trim();
+
+
+    document
+      .getElementById("fToken")
+      .value = token;
+
+
+    document
+      .getElementById("fTablet")
+      .value = tablet;
+
+
+    document
+      .getElementById("fMonitor")
+      .value = monitor;
+
+
+    document
+      .getElementById("fPin")
+      .value = pin;
+
+
+    const estado =
+      document.getElementById(
+        "estadoCamara"
+      );
+
+
+    estado.className =
+      "procesando";
+
+
+    estado.innerText =
+      "REGISTRANDO ASISTENCIA...";
+
+
+    document
+      .getElementById("formRegistro")
+      .submit();
+
+  }
+
+
+
+  window.addEventListener(
+    "message",
+    function(event) {
+
+      if (
+        !event.data ||
+        event.data.origen !==
+        "ASISTENCIA_SAN_JOSE"
+      ) {
+
+        return;
+      }
+
+
+      procesando = false;
+
+
+      const respuesta =
+        event.data.respuesta;
+
+
+      mostrarRespuesta(
+        respuesta
+      );
+
+
+      document
+        .getElementById(
+          "estadoCamara"
+        )
+        .className = "activo";
+
+
+      document
+        .getElementById(
+          "estadoCamara"
+        )
+        .innerText =
+          "LISTO PARA EL SIGUIENTE ESTUDIANTE";
+
+
+      if (
+        navigator.vibrate &&
+        respuesta &&
+        respuesta.ok
+      ) {
+
+        navigator.vibrate(120);
+      }
+
+    }
+  );
+
+
+
+  function mostrarRespuesta(r) {
+
+    const caja =
+      document.getElementById(
+        "resultado"
+      );
+
+
+    if (!r) {
+
+      mostrarError(
+        "No se recibió respuesta del sistema."
+      );
+
+      return;
+    }
+
+
+    let clase =
+      "resultado-rojo";
+
+    let titulo =
+      "ERROR";
+
+
+    if (
+      r.ok &&
+      r.tipo === "PUNTUAL"
+    ) {
+
+      clase =
+        "resultado-verde";
+
+      titulo =
+        "PUNTUAL";
+
+    }
+
+
+    else if (
+      r.ok &&
+      r.tipo === "RETARDO"
+    ) {
+
+      clase =
+        "resultado-naranja";
+
+      titulo =
+        "RETARDO";
+
+    }
+
+
+    else if (
+      r.ok &&
+      r.tipo ===
+        "PENDIENTE_VALIDACION"
+    ) {
+
+      clase =
+        "resultado-amarillo";
+
+      titulo =
+        "PENDIENTE DE VALIDACIÓN";
+
+    }
+
+
+    else if (
+      r.tipo === "DUPLICADO"
+    ) {
+
+      clase =
+        "resultado-naranja";
+
+      titulo =
+        "YA REGISTRADO";
+
+    }
+
+
+    else if (
+      r.tipo === "PIN"
+    ) {
+
+      clase =
+        "resultado-rojo";
+
+      titulo =
+        "PIN INCORRECTO";
+
+    }
+
+
+    else if (
+      r.tipo === "INVALIDO"
+    ) {
+
+      clase =
+        "resultado-rojo";
+
+      titulo =
+        "QR NO VÁLIDO";
+
+    }
+
+
+    caja.className =
+      clase;
+
+
+    caja.innerHTML = `
+
+      <div class="estado-grande">
+        ${escapar(titulo)}
+      </div>
+
+      ${
+        r.estudiante
+        ?
+        `
+        <div class="nombre">
+          ${escapar(r.estudiante)}
+        </div>
+        `
+        :
+        ""
+      }
+
+      ${
+        r.grupo
+        ?
+        `
+        <div class="detalle">
+          Grupo: ${escapar(r.grupo)}
+        </div>
+        `
+        :
+        ""
+      }
+
+      ${
+        r.hora
+        ?
+        `
+        <div class="detalle">
+          Hora: ${escapar(r.hora)}
+        </div>
+        `
+        :
+        ""
+      }
+
+      <div class="detalle">
+        ${escapar(r.mensaje || "")}
+      </div>
+
+    `;
+
+  }
+
+
+
+  function mostrarError(mensaje) {
+
+    const caja =
+      document.getElementById(
+        "resultado"
+      );
+
+
+    caja.className =
+      "resultado-rojo";
+
+
+    caja.innerHTML = `
+
+      <div class="estado-grande">
+        ERROR
+      </div>
+
+      <div class="detalle">
+        ${escapar(mensaje)}
+      </div>
+
+    `;
+
+
+    procesando = false;
+
+  }
+
+
+
+  function escapar(texto) {
+
+    const elemento =
+      document.createElement("div");
+
+
+    elemento.textContent =
+      String(texto || "");
+
+
+    return elemento.innerHTML;
+
   }
 
 </script>
 
 </body>
+
 </html>
