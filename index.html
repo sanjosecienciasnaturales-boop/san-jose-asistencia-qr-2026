@@ -545,8 +545,31 @@ FORMULARIO OCULTO
     document
       .getElementById("formRegistro")
       .submit();
+// Seguro de recuperación:
+// si por alguna razón Google no devuelve
+// la confirmación, libera el escáner.
+
+setTimeout(function() {
+
+  if (procesando) {
+
+    procesando = false;
+
+    const estado =
+      document.getElementById(
+        "estadoCamara"
+      );
+
+    estado.className =
+      "activo";
+
+    estado.innerText =
+      "LISTO PARA EL SIGUIENTE ESTUDIANTE";
 
   }
+
+}, 8000);
+  
 
 
 
