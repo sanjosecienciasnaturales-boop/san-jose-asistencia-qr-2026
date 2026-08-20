@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Asistencia QR - San José</title>
+
+  <script
+    src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      font-family: Arial, sans-serif;
+      color: #172033;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 620px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .encabezado {
+      background: #174a7c;
+      color: white;
+      padding: 24px 18px;
+      border-radius: 18px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .encabezado h1 {
+      margin: 0;
+      font-size: 27px;
+    }
+
+    .encabezado p {
+      margin: 8px 0 0;
+      line-height: 1.5;
+    }
+
+    .tarjeta {
+      background: white;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.09);
+    }
+
+    button {
+      width: 100%;
+      padding: 17px;
+      border: none;
+      border-radius: 12px;
+      background: #174a7c;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .55;
+    }
+
+    #estado {
+      text-align: center;
+      margin: 18px 0;
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    #reader {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    #resultado {
+      display: none;
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 15px;
+      background: #e8f6ec;
+      border: 2px solid #2e8b57;
+      text-align: center;
+    }
+
+    #resultado .titulo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #token {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      word-break: break-all;
+    }
+
+    .error {
+      color: #b42318;
+    }
+
+    .activo {
+      color: #18864b;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <div class="encabezado">
+    <h1>ASISTENCIA QR</h1>
+
+    <p>
+      Institución Educativa San José<br>
+      Oporapa - Huila
+    </p>
+  </div>
+
+  <div class="tarjeta">
+
+    <button
+      id="btnCamara"
+      onclick="iniciarCamara()">
+      INICIAR CÁMARA
+    </button>
+
+    <div id="estado">
+      Cámara detenida
+    </div>
+
+    <div id="reader"></div>
+
+    <div id="resultado">
+
+      <div class="titulo">
+        CÓDIGO QR LEÍDO
+      </div>
+
+      <div id="token"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  let lector = null;
+  let iniciado = false;
+  let ultimoToken = "";
+  let ultimaLectura = 0;
+
+  async function iniciarCamara() {
+
+    if (iniciado) {
+      return;
+    }
+
+    const estado =
+      document.getElementById("estado");
+
+    const boton =
+      document.getElementById("btnCamara");
+
+    estado.className = "";
+    estado.innerText =
+      "Solicitando permiso para utilizar la cámara...";
+
+    boton.disabled = true;
+
+    try {
+
+      lector =
+        new Html5Qrcode("reader");
+
+      await lector.start(
+
+        {
+          facingMode: "environment"
+        },
+
+        {
+          fps: 10,
+
+          qrbox: {
+            width: 250,
+            height: 250
+          }
+        },
+
+        function(codigo) {
+
+          const token =
+            String(codigo || "")
+              .trim()
+              .toUpperCase();
+
+          const ahora =
+            Date.now();
+
+          if (
+            token === ultimoToken &&
+            ahora - ultimaLectura < 5000
+          ) {
+            return;
+          }
+
+          ultimoToken = token;
+          ultimaLectura = ahora;
+
+          document
+            .getElementById("token")
+            .innerText = token;
+
+          document
+            .getElementById("resultado")
+            .style.display = "block";
+
+          estado.className =
+            "activo";
+
+          estado.innerText =
+            "Cámara activa - QR detectado";
+        },
+
+        function() {
+          // Los intentos normales de lectura se ignoran.
+        }
+
+      );
+
+      iniciado = true;
+
+      boton.style.display =
+        "none";
+
+      estado.className =
+        "activo";
+
+      estado.innerText =
+        "Cámara activa - acerque el código QR";
+
+    } catch (error) {
+
+      console.error(error);
+
+      boton.disabled = false;
+
+      estado.className =
+        "error";
+
+      estado.innerHTML =
+        "No fue posible abrir la cámara.<br>" +
+        "Revise los permisos de cámara del navegador.";
+    }
+  }
+
+</script>
+
+</body>
+</html>
