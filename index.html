@@ -3,37 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b3d71">
-  <title>Control de Ingreso - San José</title>
+  <meta name="theme-color" content="#082f5b">
+  <meta name="color-scheme" content="light">
+  <title>Control de Ingreso | I.E. San José</title>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <style>
     :root {
-      --azul-900: #082f5b;
-      --azul-800: #0b3d71;
-      --azul-700: #155b99;
-      --azul-500: #2685d8;
-      --blanco: #ffffff;
-      --texto: #172033;
-      --verde: #2e7d32;
-      --naranja: #ef6c00;
-      --rojo: #c62828;
-      --amarillo: #f2b705;
+      --navy-950: #062746;
+      --navy-900: #082f5b;
+      --navy-800: #0b3d71;
+      --navy-700: #155b99;
+      --blue-500: #2685d8;
+
+      --green-700: #216e3a;
+      --green-100: #e7f6ec;
+      --orange-700: #8a4700;
+      --orange-100: #fff1df;
+      --red-700: #8a1f1f;
+      --red-100: #fdeaea;
+      --yellow-800: #735600;
+      --yellow-100: #fff8d9;
+
+      --text: #162538;
+      --muted: #63758a;
+      --line: #d7e1eb;
+      --white: #ffffff;
+
+      --shadow-lg: 0 20px 52px rgba(0, 34, 75, .24);
+      --shadow-md: 0 12px 32px rgba(0, 34, 75, .16);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    html, body {
-      min-height: 100%;
+    html,
+    body {
       margin: 0;
+      min-height: 100%;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--texto);
-      background: var(--azul-800);
-      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      min-height: 100dvh;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      color: var(--text);
+      background: var(--navy-900);
+      padding:
+        env(safe-area-inset-top)
+        0
+        env(safe-area-inset-bottom);
       overflow-x: hidden;
     }
 
@@ -41,15 +73,16 @@
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: -3;
       background:
         linear-gradient(
           180deg,
-          rgba(4, 31, 68, .18) 0%,
-          rgba(10, 74, 132, .18) 45%,
-          rgba(4, 34, 76, .34) 100%
+          rgba(3, 25, 57, .20) 0%,
+          rgba(8, 66, 121, .08) 42%,
+          rgba(3, 29, 66, .35) 100%
         ),
-        url("./fondo-institucional.png") center center / cover no-repeat;
+        url("./fondo-institucional.png")
+        center center / cover no-repeat;
       transform: scale(1.015);
     }
 
@@ -57,247 +90,458 @@
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -1;
-      background: linear-gradient(
-        180deg,
-        rgba(4, 35, 77, .10),
-        rgba(4, 35, 77, .24)
-      );
+      z-index: -2;
       pointer-events: none;
+      background:
+        radial-gradient(
+          circle at 50% 18%,
+          rgba(255,255,255,.11),
+          transparent 34%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(1, 27, 60, .05),
+          rgba(1, 27, 60, .22)
+        );
     }
 
-    .contenedor {
-      width: min(100%, 660px);
+    .app {
+      width: min(100%, 720px);
       margin: 0 auto;
       padding: 18px;
     }
 
-    /* ---------- Encabezado ---------- */
+    /* ==================================================
+       CABECERA INSTITUCIONAL
+       ================================================== */
 
-    .encabezado {
-      background: rgba(8, 55, 105, .94);
-      color: white;
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(6, 47, 91, .97),
+          rgba(15, 87, 151, .95)
+        );
       border: 1px solid rgba(255,255,255,.18);
-      border-radius: 24px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 16px 38px rgba(0, 28, 67, .28);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      border-radius: var(--radius-xl);
+      padding: 17px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    .encabezado-institucional {
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      right: -70px;
+      top: -95px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow:
+        0 0 0 28px rgba(255,255,255,.025),
+        0 0 0 56px rgba(255,255,255,.02);
+      pointer-events: none;
+    }
+
+    .brand {
+      position: relative;
+      z-index: 1;
       display: grid;
-      grid-template-columns: 78px 1fr 78px;
+      grid-template-columns: 82px 1fr 82px;
+      gap: 14px;
       align-items: center;
-      gap: 12px;
     }
 
-    .contenedor-logo {
-      width: 78px;
-      height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      border-radius: 16px;
+    .brand-logo {
+      width: 82px;
+      height: 82px;
       padding: 5px;
-      box-shadow: 0 5px 16px rgba(0,0,0,.14);
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: 0 8px 22px rgba(0,0,0,.14);
     }
 
-    .logo-institucional {
+    .brand-logo img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
 
-    .texto-encabezado {
+    .brand-copy {
       min-width: 0;
       text-align: center;
     }
 
-    .nombre-colegio {
-      font-size: 15px;
-      line-height: 1.18;
-      font-weight: 800;
-      letter-spacing: .2px;
+    .brand-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      opacity: .78;
     }
 
-    .ubicacion {
+    .brand-school {
+      margin-top: 4px;
+      font-size: clamp(15px, 3vw, 19px);
+      font-weight: 850;
+      line-height: 1.15;
+      letter-spacing: .15px;
+    }
+
+    .brand-location {
       margin-top: 4px;
       font-size: 12px;
-      opacity: .9;
+      opacity: .88;
     }
 
-    .titulo-sistema {
+    .brand-title {
       margin-top: 10px;
-      font-size: 24px;
+      font-size: clamp(21px, 5vw, 29px);
       line-height: 1;
       font-weight: 900;
-      letter-spacing: .5px;
+      letter-spacing: .4px;
     }
 
-    .subtitulo-sistema {
+    .brand-subtitle {
       margin-top: 6px;
       font-size: 12px;
-      opacity: .85;
+      opacity: .82;
     }
 
-    /* ---------- Tarjetas ---------- */
+    /* ==================================================
+       BARRA DE ESTADO
+       ================================================== */
 
-    .tarjeta {
-      background: rgba(255,255,255,.96);
-      border: 1px solid rgba(255,255,255,.75);
-      border-radius: 22px;
+    .status-bar {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .status-chip {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.13);
+      font-size: 11px;
+      font-weight: 700;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: #53d879;
+      box-shadow: 0 0 0 4px rgba(83,216,121,.12);
+    }
+
+    .status-dot.offline {
+      background: #ff6262;
+      box-shadow: 0 0 0 4px rgba(255,98,98,.12);
+    }
+
+    .time-chip {
+      white-space: nowrap;
+    }
+
+    /* ==================================================
+       TARJETAS
+       ================================================== */
+
+    .panel {
+      margin-top: 15px;
       padding: 20px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.965);
+      border: 1px solid rgba(255,255,255,.74);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
       margin-bottom: 16px;
-      box-shadow: 0 16px 36px rgba(0, 33, 74, .22);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
 
-    .titulo-tarjeta {
-      margin: 0 0 4px;
-      color: var(--azul-900);
-      font-size: 18px;
-      font-weight: 800;
+    .panel-title {
+      margin: 0;
+      color: var(--navy-950);
+      font-size: 19px;
+      line-height: 1.1;
+      font-weight: 850;
     }
 
-    .ayuda-tarjeta {
-      margin: 0 0 16px;
-      color: #607085;
+    .panel-help {
+      margin: 5px 0 0;
+      color: var(--muted);
       font-size: 13px;
       line-height: 1.4;
     }
 
-    .campo {
+    .badge {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #edf5fc;
+      color: var(--navy-700);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .field {
       margin-top: 13px;
     }
 
     label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
       margin-bottom: 7px;
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      color: #26384e;
       font-size: 14px;
       font-weight: 800;
-      color: #23354b;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       min-height: 52px;
       padding: 13px 14px;
-      border: 1px solid #c9d5e3;
-      border-radius: 13px;
-      background: rgba(255,255,255,.98);
-      color: #172033;
-      font-size: 16px;
+      border: 1px solid #cbd7e4;
+      border-radius: var(--radius-md);
       outline: none;
-      transition: .2s ease;
+      background: #fff;
+      color: var(--text);
+      font-size: 16px;
+      transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
     }
 
-    input:focus, select:focus {
-      border-color: var(--azul-500);
+    input:focus,
+    select:focus {
+      border-color: var(--blue-500);
       box-shadow: 0 0 0 4px rgba(38,133,216,.12);
     }
 
-    button {
-      width: 100%;
-      min-height: 54px;
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
       margin-top: 18px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--azul-800), #1673bd);
-      color: white;
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: .3px;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(12, 76, 135, .24);
-      transition: transform .15s ease, opacity .15s ease;
     }
 
-    button:active { transform: scale(.99); }
-    button:disabled { opacity: .55; cursor: not-allowed; }
+    button {
+      min-height: 54px;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      transition:
+        transform .14s ease,
+        box-shadow .14s ease,
+        opacity .14s ease;
+    }
 
-    /* ---------- Escáner ---------- */
+    button:active {
+      transform: scale(.992);
+    }
 
-    .tarjeta-scanner {
-      padding: 16px;
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background:
+        linear-gradient(
+          135deg,
+          var(--navy-800),
+          #1573be
+        );
+      box-shadow: 0 12px 26px rgba(16,88,151,.24);
+    }
+
+    .policy {
+      margin-top: 13px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .policy span {
+      padding: 6px 9px;
+      border-radius: 9px;
+      color: #637389;
+      background: #f1f5f8;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ==================================================
+       ESCÁNER
+       ================================================== */
+
+    .scanner-panel {
+      padding: 15px;
     }
 
     #estadoCamara {
-      display: inline-flex;
+      width: 100%;
+      min-height: 44px;
+      margin-bottom: 12px;
+      padding: 10px 13px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      min-height: 42px;
-      margin: 0 0 12px;
       border-radius: 12px;
-      background: #edf3f9;
-      color: #516479;
-      font-weight: 800;
       text-align: center;
-      padding: 9px 12px;
+      color: #596b80;
+      background: #edf3f8;
+      font-size: 13px;
+      font-weight: 850;
+      transition: .2s ease;
     }
 
     #estadoCamara.activo {
-      background: #e8f5ec;
-      color: #1b6f3a;
+      color: var(--green-700);
+      background: var(--green-100);
     }
 
     #estadoCamara.procesando {
-      background: #fff4dc;
-      color: #8a5a00;
+      color: var(--orange-700);
+      background: var(--orange-100);
     }
 
-    .marco-scanner {
+    .scanner-shell {
       position: relative;
       overflow: hidden;
-      border-radius: 18px;
-      background: #0a2340;
-      border: 2px solid rgba(35, 118, 188, .28);
-      min-height: 250px;
-    }
-
-    .marco-scanner::before,
-    .marco-scanner::after {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      z-index: 5;
-      pointer-events: none;
-      border-radius: 15px;
-    }
-
-    .marco-scanner::before {
-      border:
-        3px solid transparent;
+      min-height: 275px;
+      border-radius: 20px;
       background:
-        linear-gradient(#34c759,#34c759) left top / 46px 4px no-repeat,
-        linear-gradient(#34c759,#34c759) left top / 4px 46px no-repeat,
-        linear-gradient(#34c759,#34c759) right top / 46px 4px no-repeat,
-        linear-gradient(#34c759,#34c759) right top / 4px 46px no-repeat,
-        linear-gradient(#34c759,#34c759) left bottom / 46px 4px no-repeat,
-        linear-gradient(#34c759,#34c759) left bottom / 4px 46px no-repeat,
-        linear-gradient(#34c759,#34c759) right bottom / 46px 4px no-repeat,
-        linear-gradient(#34c759,#34c759) right bottom / 4px 46px no-repeat;
+        radial-gradient(
+          circle at center,
+          #164d79,
+          #071e36 74%
+        );
+      border: 1px solid rgba(17,89,151,.22);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.035);
     }
 
     #reader {
       width: 100%;
-      min-height: 250px;
+      min-height: 275px;
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: 20px;
     }
 
     #reader video {
-      border-radius: 16px !important;
       object-fit: cover !important;
+      border-radius: 20px !important;
     }
 
-    /* ---------- Resultado ---------- */
+    .scan-guide {
+      position: absolute;
+      inset: 18px;
+      z-index: 5;
+      pointer-events: none;
+      border-radius: 17px;
+      background:
+        linear-gradient(#48d96d,#48d96d) left top / 48px 4px no-repeat,
+        linear-gradient(#48d96d,#48d96d) left top / 4px 48px no-repeat,
+        linear-gradient(#48d96d,#48d96d) right top / 48px 4px no-repeat,
+        linear-gradient(#48d96d,#48d96d) right top / 4px 48px no-repeat,
+        linear-gradient(#48d96d,#48d96d) left bottom / 48px 4px no-repeat,
+        linear-gradient(#48d96d,#48d96d) left bottom / 4px 48px no-repeat,
+        linear-gradient(#48d96d,#48d96d) right bottom / 48px 4px no-repeat,
+        linear-gradient(#48d96d,#48d96d) right bottom / 4px 48px no-repeat;
+      opacity: .95;
+    }
+
+    .scan-line {
+      position: absolute;
+      z-index: 6;
+      left: 34px;
+      right: 34px;
+      top: 25%;
+      height: 2px;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #5ff47d 20%,
+          #b4ffbe 50%,
+          #5ff47d 80%,
+          transparent
+        );
+      filter: drop-shadow(0 0 5px #55ff76);
+    }
+
+    .scanner-shell.scanning .scan-line {
+      opacity: .92;
+      animation: scanline 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scanline {
+      0%   { top: 20%; }
+      50%  { top: 78%; }
+      100% { top: 20%; }
+    }
+
+    .scanner-placeholder {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      text-align: center;
+      color: rgba(255,255,255,.72);
+      pointer-events: none;
+    }
+
+    .scanner-placeholder strong {
+      display: block;
+      color: rgba(255,255,255,.94);
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    /* ==================================================
+       RESULTADOS
+       ================================================== */
 
     #resultado {
       display: none;
@@ -305,49 +549,61 @@
       padding: 20px;
       border-radius: 18px;
       text-align: center;
-      box-shadow: 0 8px 22px rgba(0,0,0,.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      animation: resultIn .24s ease-out;
+    }
+
+    @keyframes resultIn {
+      from {
+        transform: translateY(6px) scale(.99);
+        opacity: 0;
+      }
+      to {
+        transform: none;
+        opacity: 1;
+      }
     }
 
     .resultado-verde {
       display: block !important;
-      background: #e5f6ea;
+      color: #14572b;
+      background: var(--green-100);
       border: 2px solid #2e7d32;
-      color: #145b2b;
     }
 
     .resultado-naranja {
       display: block !important;
-      background: #fff1df;
+      color: #793d00;
+      background: var(--orange-100);
       border: 2px solid #ef6c00;
-      color: #7d3e00;
     }
 
     .resultado-amarillo {
       display: block !important;
-      background: #fff8d9;
-      border: 2px solid #d29e00;
-      color: #6e5200;
+      color: var(--yellow-800);
+      background: var(--yellow-100);
+      border: 2px solid #d2a000;
     }
 
     .resultado-rojo {
       display: block !important;
-      background: #fde8e8;
+      color: var(--red-700);
+      background: var(--red-100);
       border: 2px solid #c62828;
-      color: #7d1c1c;
     }
 
     .estado-grande {
-      font-size: 22px;
-      font-weight: 900;
       margin-bottom: 8px;
-      letter-spacing: .25px;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: .2px;
     }
 
     .nombre {
+      margin-bottom: 8px;
       font-size: 22px;
+      line-height: 1.22;
       font-weight: 900;
-      margin-bottom: 7px;
-      line-height: 1.25;
     }
 
     .detalle {
@@ -356,48 +612,102 @@
       line-height: 1.4;
     }
 
-    .pie {
-      padding: 8px 4px 18px;
+    /* ==================================================
+       FOOTER
+       ================================================== */
+
+    .footer {
+      padding: 10px 4px 18px;
       text-align: center;
       color: rgba(255,255,255,.82);
-      font-size: 11px;
-      text-shadow: 0 1px 2px rgba(0,0,0,.25);
+      font-size: 10px;
+      line-height: 1.5;
+      text-shadow: 0 1px 2px rgba(0,0,0,.26);
     }
 
-    @media (max-width: 500px) {
-      .contenedor { padding: 11px; }
+    /* ==================================================
+       RESPONSIVE
+       ================================================== */
 
-      .encabezado {
-        border-radius: 20px;
-        padding: 12px;
+    @media (max-width: 520px) {
+      .app {
+        padding: 10px;
       }
 
-      .encabezado-institucional {
+      .hero {
+        padding: 11px;
+        border-radius: 20px;
+      }
+
+      .brand {
         grid-template-columns: 58px 1fr 58px;
         gap: 8px;
       }
 
-      .contenedor-logo {
+      .brand-logo {
         width: 58px;
         height: 58px;
         border-radius: 12px;
         padding: 4px;
       }
 
-      .nombre-colegio { font-size: 12px; }
-      .ubicacion { font-size: 10px; }
-      .titulo-sistema {
+      .brand-kicker {
+        font-size: 8px;
+        letter-spacing: 1.1px;
+      }
+
+      .brand-school {
+        font-size: 12px;
+      }
+
+      .brand-location {
+        font-size: 10px;
+      }
+
+      .brand-title {
         margin-top: 7px;
         font-size: 19px;
       }
-      .subtitulo-sistema { font-size: 10px; }
 
-      .tarjeta {
+      .brand-subtitle {
+        font-size: 9px;
+      }
+
+      .status-bar {
+        grid-template-columns: 1fr auto;
+      }
+
+      .time-chip {
+        display: none;
+      }
+
+      .status-chip {
+        min-height: 34px;
+        padding: 7px 9px;
+        font-size: 10px;
+      }
+
+      .panel {
+        margin-top: 12px;
         padding: 16px;
         border-radius: 19px;
       }
 
-      input, select {
+      .panel-title {
+        font-size: 17px;
+      }
+
+      .panel-help {
+        font-size: 12px;
+      }
+
+      .badge {
+        padding: 6px 8px;
+        font-size: 9px;
+      }
+
+      input,
+      select {
         min-height: 48px;
         font-size: 15px;
       }
@@ -407,62 +717,103 @@
         font-size: 15px;
       }
 
-      .nombre { font-size: 20px; }
-      .estado-grande { font-size: 20px; }
+      .scanner-shell,
+      #reader {
+        min-height: 250px;
+      }
+
+      .nombre {
+        font-size: 20px;
+      }
+
+      .estado-grande {
+        font-size: 19px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="contenedor">
+<main class="app">
 
-  <header class="encabezado">
-    <div class="encabezado-institucional">
+  <header class="hero">
+    <div class="brand">
 
-      <div class="contenedor-logo">
+      <div class="brand-logo">
         <img
           src="./escudo-colegio.png"
           alt="Escudo Institución Educativa San José"
-          class="logo-institucional"
         >
       </div>
 
-      <div class="texto-encabezado">
-        <div class="nombre-colegio">
+      <div class="brand-copy">
+        <div class="brand-kicker">Sistema institucional</div>
+        <div class="brand-school">
           INSTITUCIÓN EDUCATIVA SAN JOSÉ
         </div>
-        <div class="ubicacion">
-          Oporapa - Huila
+        <div class="brand-location">
+          Oporapa · Huila
         </div>
-        <div class="titulo-sistema">
+        <div class="brand-title">
           CONTROL DE INGRESO
         </div>
-        <div class="subtitulo-sistema">
-          Sistema de asistencia QR
+        <div class="brand-subtitle">
+          Registro de asistencia mediante código QR
         </div>
       </div>
 
-      <div class="contenedor-logo">
+      <div class="brand-logo">
         <img
           src="./escudo-huila.png"
           alt="Escudo Gobernación del Huila"
-          class="logo-institucional"
         >
       </div>
 
     </div>
+
+    <div class="status-bar">
+      <div class="status-chip">
+        <span id="networkDot" class="status-dot"></span>
+        <span id="networkText">Sistema en línea</span>
+      </div>
+
+      <div class="status-chip">
+        <span>📅</span>
+        <span id="fechaActual">--</span>
+      </div>
+
+      <div class="status-chip time-chip">
+        <span>🕒</span>
+        <span id="horaActual">--:--:--</span>
+      </div>
+    </div>
   </header>
 
 
-  <section class="tarjeta">
-    <h2 class="titulo-tarjeta">Registro de entrada</h2>
-    <p class="ayuda-tarjeta">
-      Seleccione la tablet, identifique al monitor y habilite el escáner.
-    </p>
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h1 class="panel-title">
+          Registro de entrada
+        </h1>
+        <p class="panel-help">
+          Configure la estación y habilite el lector para iniciar la jornada.
+        </p>
+      </div>
 
-    <div class="campo">
-      <label for="tablet">📱 Tablet</label>
+      <div class="badge">
+        4 estaciones
+      </div>
+    </div>
+
+
+    <div class="field">
+      <label for="tablet">
+        <span>📱</span>
+        Tablet
+      </label>
+
       <select id="tablet">
         <option value="TABLET-01">TABLET-01</option>
         <option value="TABLET-02">TABLET-02</option>
@@ -471,8 +822,13 @@
       </select>
     </div>
 
-    <div class="campo">
-      <label for="monitor">👤 Monitor responsable</label>
+
+    <div class="field">
+      <label for="monitor">
+        <span>👤</span>
+        Monitor responsable
+      </label>
+
       <input
         id="monitor"
         type="text"
@@ -481,8 +837,13 @@
       >
     </div>
 
-    <div class="campo">
-      <label for="pin">🔐 PIN del sistema</label>
+
+    <div class="field">
+      <label for="pin">
+        <span>🔐</span>
+        PIN del sistema
+      </label>
+
       <input
         id="pin"
         type="password"
@@ -492,32 +853,60 @@
       >
     </div>
 
-    <button
-      id="btnCamara"
-      type="button"
-      onclick="iniciarCamara()"
-    >
-      📷 INICIAR ESCÁNER
-    </button>
+
+    <div class="policy">
+      <span>Hasta 7:00 · Puntual</span>
+      <span>7:01–7:30 · Retardo</span>
+      <span>Después de 7:30 · Validación</span>
+    </div>
+
+
+    <div class="action-row">
+      <button
+        id="btnCamara"
+        class="btn-primary"
+        type="button"
+        onclick="iniciarCamara()"
+      >
+        📷 INICIAR ESCÁNER
+      </button>
+    </div>
   </section>
 
 
-  <section class="tarjeta tarjeta-scanner">
-    <div id="estadoCamara">Cámara detenida</div>
+  <section class="panel scanner-panel">
+    <div id="estadoCamara">
+      Cámara detenida
+    </div>
 
-    <div class="marco-scanner">
+    <div id="scannerShell" class="scanner-shell">
+
+      <div
+        id="scannerPlaceholder"
+        class="scanner-placeholder"
+      >
+        <div>
+          <strong>Lector QR preparado</strong>
+          Inicie el escáner para habilitar la cámara.
+        </div>
+      </div>
+
       <div id="reader"></div>
+
+      <div class="scan-guide"></div>
+      <div class="scan-line"></div>
     </div>
 
     <div id="resultado"></div>
   </section>
 
 
-  <div class="pie">
+  <footer class="footer">
+    Sistema institucional de control de asistencia QR<br>
     Institución Educativa San José · Oporapa, Huila
-  </div>
+  </footer>
 
-</div>
+</main>
 
 
 <form
@@ -533,10 +922,11 @@
   <input id="fPin" name="pin" type="hidden">
 </form>
 
+
 <iframe
   name="respuestaBackend"
-  style="display:none;"
   title="Respuesta del sistema"
+  style="display:none;"
 ></iframe>
 
 
@@ -548,6 +938,131 @@
   let ultimaLectura = 0;
   let temporizadorResultado = null;
 
+
+  /* ==================================================
+     FECHA, HORA Y CONEXIÓN
+     ================================================== */
+
+  function actualizarReloj() {
+
+    const ahora =
+      new Date();
+
+    document
+      .getElementById("fechaActual")
+      .textContent =
+        ahora.toLocaleDateString(
+          "es-CO",
+          {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+          }
+        );
+
+    document
+      .getElementById("horaActual")
+      .textContent =
+        ahora.toLocaleTimeString(
+          "es-CO",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+  }
+
+
+  function actualizarConexion() {
+
+    const dot =
+      document.getElementById(
+        "networkDot"
+      );
+
+    const texto =
+      document.getElementById(
+        "networkText"
+      );
+
+    if (navigator.onLine) {
+      dot.classList.remove(
+        "offline"
+      );
+      texto.textContent =
+        "Sistema en línea";
+    }
+
+    else {
+      dot.classList.add(
+        "offline"
+      );
+      texto.textContent =
+        "Sin conexión";
+    }
+  }
+
+
+  actualizarReloj();
+  actualizarConexion();
+
+  setInterval(
+    actualizarReloj,
+    1000
+  );
+
+  window.addEventListener(
+    "online",
+    actualizarConexion
+  );
+
+  window.addEventListener(
+    "offline",
+    actualizarConexion
+  );
+
+
+  /* ==================================================
+     PREFERENCIAS DE LA ESTACIÓN
+     ================================================== */
+
+  window.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      const tabletGuardada =
+        localStorage.getItem(
+          "sanJoseTablet"
+        );
+
+      const monitorGuardado =
+        localStorage.getItem(
+          "sanJoseMonitor"
+        );
+
+
+      if (tabletGuardada) {
+        document
+          .getElementById("tablet")
+          .value =
+            tabletGuardada;
+      }
+
+
+      if (monitorGuardado) {
+        document
+          .getElementById("monitor")
+          .value =
+            monitorGuardado;
+      }
+    }
+  );
+
+
+  /* ==================================================
+     CÁMARA
+     ================================================== */
 
   async function iniciarCamara() {
 
@@ -562,6 +1077,11 @@
         .getElementById("pin")
         .value
         .trim();
+
+    const tablet =
+      document
+        .getElementById("tablet")
+        .value;
 
 
     if (!monitor) {
@@ -580,9 +1100,28 @@
     }
 
 
+    if (!navigator.onLine) {
+      mostrarError(
+        "No hay conexión a internet. Verifique la red antes de iniciar."
+      );
+      return;
+    }
+
+
     if (camaraIniciada) {
       return;
     }
+
+
+    localStorage.setItem(
+      "sanJoseTablet",
+      tablet
+    );
+
+    localStorage.setItem(
+      "sanJoseMonitor",
+      monitor
+    );
 
 
     const estado =
@@ -595,6 +1134,16 @@
         "btnCamara"
       );
 
+    const shell =
+      document.getElementById(
+        "scannerShell"
+      );
+
+    const placeholder =
+      document.getElementById(
+        "scannerPlaceholder"
+      );
+
 
     ocultarResultado();
 
@@ -602,24 +1151,28 @@
 
     estado.className = "";
 
-    estado.innerText =
+    estado.textContent =
       "Solicitando acceso a la cámara...";
 
 
     try {
 
       lector =
-        new Html5Qrcode("reader");
+        new Html5Qrcode(
+          "reader"
+        );
 
 
       await lector.start(
 
         {
-          facingMode: "environment"
+          facingMode:
+            "environment"
         },
 
         {
           fps: 10,
+
           qrbox: {
             width: 250,
             height: 250
@@ -629,7 +1182,7 @@
         codigoDetectado,
 
         function() {
-          // Los fallos normales de lectura se ignoran.
+          // Fallos normales de lectura.
         }
 
       );
@@ -637,12 +1190,20 @@
 
       camaraIniciada = true;
 
-      boton.style.display = "none";
+      boton.style.display =
+        "none";
+
+      placeholder.style.display =
+        "none";
+
+      shell.classList.add(
+        "scanning"
+      );
 
       estado.className =
         "activo";
 
-      estado.innerText =
+      estado.textContent =
         "🟢 ESCÁNER ACTIVO · Acerque el código QR";
 
 
@@ -652,9 +1213,13 @@
 
       boton.disabled = false;
 
+      shell.classList.remove(
+        "scanning"
+      );
+
       estado.className = "";
 
-      estado.innerText =
+      estado.textContent =
         "No se pudo iniciar la cámara.";
 
       mostrarError(
@@ -664,23 +1229,36 @@
   }
 
 
+  /* ==================================================
+     LECTURA DEL QR
+     ================================================== */
+
   function codigoDetectado(codigo) {
 
     const token =
-      String(codigo || "")
-        .trim()
-        .toUpperCase();
+      String(
+        codigo || ""
+      )
+      .trim()
+      .toUpperCase();
 
 
-    if (!token.startsWith("SJ-")) {
+    if (
+      !token.startsWith("SJ-")
+    ) {
       mostrarError(
         "Este código QR no pertenece al sistema."
+      );
+      reproducirTono(
+        250,
+        .12
       );
       return;
     }
 
 
-    const ahora = Date.now();
+    const ahora =
+      Date.now();
 
 
     if (
@@ -721,19 +1299,23 @@
 
     document
       .getElementById("fToken")
-      .value = token;
+      .value =
+        token;
 
     document
       .getElementById("fTablet")
-      .value = tablet;
+      .value =
+        tablet;
 
     document
       .getElementById("fMonitor")
-      .value = monitor;
+      .value =
+        monitor;
 
     document
       .getElementById("fPin")
-      .value = pin;
+      .value =
+        pin;
 
 
     const estado =
@@ -745,33 +1327,45 @@
     estado.className =
       "procesando";
 
-    estado.innerText =
+    estado.textContent =
       "⏳ REGISTRANDO ASISTENCIA...";
 
 
     document
-      .getElementById("formRegistro")
+      .getElementById(
+        "formRegistro"
+      )
       .submit();
 
 
-    // Seguro: si Google no devuelve confirmación,
-    // el escáner se libera para no quedar bloqueado.
-    setTimeout(function() {
+    /*
+      Seguro de recuperación:
+      si el backend tarda o no responde,
+      la estación se libera.
+    */
+    setTimeout(
+      function() {
 
-      if (procesando) {
+        if (procesando) {
 
-        procesando = false;
+          procesando = false;
 
-        estado.className =
-          "activo";
+          estado.className =
+            "activo";
 
-        estado.innerText =
-          "🟢 LISTO PARA EL SIGUIENTE ESTUDIANTE";
-      }
+          estado.textContent =
+            "🟢 LISTO PARA EL SIGUIENTE ESTUDIANTE";
+        }
 
-    }, 8000);
+      },
+      8000
+    );
   }
 
+
+  /* ==================================================
+     RESPUESTA DEL BACKEND
+     ================================================== */
 
   window.addEventListener(
     "message",
@@ -805,20 +1399,43 @@
       estado.className =
         "activo";
 
-      estado.innerText =
+      estado.textContent =
         "🟢 LISTO PARA EL SIGUIENTE ESTUDIANTE";
 
 
       if (
-        navigator.vibrate &&
         respuesta &&
         respuesta.ok
       ) {
-        navigator.vibrate(120);
+
+        if (
+          navigator.vibrate
+        ) {
+          navigator.vibrate(
+            [80, 35, 80]
+          );
+        }
+
+        reproducirTono(
+          740,
+          .10
+        );
+      }
+
+      else {
+
+        reproducirTono(
+          260,
+          .14
+        );
       }
     }
   );
 
+
+  /* ==================================================
+     RESULTADOS
+     ================================================== */
 
   function mostrarRespuesta(r) {
 
@@ -850,78 +1467,106 @@
       r.ok &&
       r.tipo === "PUNTUAL"
     ) {
+
       clase =
         "resultado-verde";
+
       titulo =
         "INGRESO REGISTRADO · PUNTUAL";
+
       icono =
         "✅";
     }
+
 
     else if (
       r.ok &&
       r.tipo === "RETARDO"
     ) {
+
       clase =
         "resultado-naranja";
+
       titulo =
         "RETARDO REGISTRADO";
+
       icono =
         "⏰";
     }
 
+
     else if (
       r.ok &&
-      r.tipo === "PENDIENTE_VALIDACION"
+      r.tipo ===
+        "PENDIENTE_VALIDACION"
     ) {
+
       clase =
         "resultado-amarillo";
+
       titulo =
         "PENDIENTE DE VALIDACIÓN";
+
       icono =
         "⚠️";
     }
+
 
     else if (
       r.tipo === "DUPLICADO"
     ) {
+
       clase =
         "resultado-naranja";
+
       titulo =
         "YA REGISTRADO";
+
       icono =
         "⚠️";
     }
 
+
     else if (
       r.tipo === "PIN"
     ) {
+
       clase =
         "resultado-rojo";
+
       titulo =
         "PIN INCORRECTO";
+
       icono =
         "🔒";
     }
 
+
     else if (
       r.tipo === "INVALIDO"
     ) {
+
       clase =
         "resultado-rojo";
+
       titulo =
         "QR NO VÁLIDO";
+
       icono =
         "❌";
     }
 
+
     else if (
       r.tipo === "NO_HABILITADO"
     ) {
+
       clase =
         "resultado-rojo";
+
       titulo =
         "ESTUDIANTE NO HABILITADO";
+
       icono =
         "⛔";
     }
@@ -938,38 +1583,40 @@
 
       ${
         r.estudiante
-        ?
-        `
-          <div class="nombre">
-            ${escapar(r.estudiante)}
-          </div>
-        `
-        :
-        ""
+          ?
+          `
+            <div class="nombre">
+              ${escapar(r.estudiante)}
+            </div>
+          `
+          :
+          ""
       }
 
       ${
         r.grupo
-        ?
-        `
-          <div class="detalle">
-            Grupo: <strong>${escapar(r.grupo)}</strong>
-          </div>
-        `
-        :
-        ""
+          ?
+          `
+            <div class="detalle">
+              Grupo:
+              <strong>${escapar(r.grupo)}</strong>
+            </div>
+          `
+          :
+          ""
       }
 
       ${
         r.hora
-        ?
-        `
-          <div class="detalle">
-            Hora: <strong>${escapar(r.hora)}</strong>
-          </div>
-        `
-        :
-        ""
+          ?
+          `
+            <div class="detalle">
+              Hora:
+              <strong>${escapar(r.hora)}</strong>
+            </div>
+          `
+          :
+          ""
       }
 
       <div class="detalle">
@@ -978,7 +1625,9 @@
     `;
 
 
-    if (temporizadorResultado) {
+    if (
+      temporizadorResultado
+    ) {
       clearTimeout(
         temporizadorResultado
       );
@@ -1009,17 +1658,21 @@
       <div class="estado-grande">
         ❌ ERROR
       </div>
+
       <div class="detalle">
         ${escapar(mensaje)}
       </div>
     `;
 
 
-    if (temporizadorResultado) {
+    if (
+      temporizadorResultado
+    ) {
       clearTimeout(
         temporizadorResultado
       );
     }
+
 
     temporizadorResultado =
       setTimeout(
@@ -1040,20 +1693,110 @@
 
     caja.innerHTML = "";
 
-    caja.style.display = "none";
+    caja.style.display =
+      "none";
   }
 
+
+  /* ==================================================
+     TONO DE CONFIRMACIÓN
+     ================================================== */
+
+  function reproducirTono(
+    frecuencia,
+    duracion
+  ) {
+
+    try {
+
+      const AudioCtx =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+      if (!AudioCtx) {
+        return;
+      }
+
+
+      const ctx =
+        new AudioCtx();
+
+      const oscilador =
+        ctx.createOscillator();
+
+      const ganancia =
+        ctx.createGain();
+
+
+      oscilador.type =
+        "sine";
+
+      oscilador.frequency.value =
+        frecuencia;
+
+
+      ganancia.gain.setValueAtTime(
+        .055,
+        ctx.currentTime
+      );
+
+      ganancia.gain.exponentialRampToValueAtTime(
+        .001,
+        ctx.currentTime +
+          duracion
+      );
+
+
+      oscilador.connect(
+        ganancia
+      );
+
+      ganancia.connect(
+        ctx.destination
+      );
+
+
+      oscilador.start();
+
+      oscilador.stop(
+        ctx.currentTime +
+          duracion
+      );
+
+
+      oscilador.onended =
+        function() {
+          ctx.close();
+        };
+
+    }
+
+    catch (error) {
+      // El sonido es complementario.
+    }
+  }
+
+
+  /* ==================================================
+     ESCAPAR HTML
+     ================================================== */
 
   function escapar(texto) {
 
     const elemento =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     elemento.textContent =
-      String(texto || "");
+      String(
+        texto || ""
+      );
 
     return elemento.innerHTML;
   }
+
 </script>
 
 </body>
