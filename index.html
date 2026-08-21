@@ -37,23 +37,85 @@
     }
 
     .encabezado {
-      background: #174a7c;
-      color: white;
-      border-radius: 18px;
-      padding: 22px;
-      text-align: center;
-      margin-bottom: 18px;
-    }
+  background: #174a7c;
+  color: white;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
 
-    .encabezado h1 {
-      margin: 0;
-      font-size: 28px;
-    }
+   .encabezado-institucional {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-    .encabezado p {
-      margin: 7px 0 0;
-      line-height: 1.5;
-    }
+.contenedor-logo {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+  border-radius: 14px;
+  padding: 5px;
+}
+
+.logo-institucional {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.texto-encabezado {
+  flex: 1;
+  text-align: center;
+}
+
+.nombre-colegio {
+  font-size: 19px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.ubicacion {
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.titulo-sistema {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+
+  .contenedor-logo {
+    width: 66px;
+    height: 66px;
+    border-radius: 10px;
+  }
+
+  .nombre-colegio {
+    font-size: 14px;
+  }
+
+  .ubicacion {
+    font-size: 12px;
+  }
+
+  .titulo-sistema {
+    font-size: 20px;
+  }
+
+  .encabezado {
+    padding: 12px;
+  }
+}
 
     .tarjeta {
       background: white;
@@ -181,17 +243,45 @@
 <div class="contenedor">
 
 
-  <div class="encabezado">
+<div class="encabezado">
 
-    <h1>ASISTENCIA QR</h1>
+  <div class="encabezado-institucional">
 
-    <p>
-      Institución Educativa San José
-      <br>
-      Oporapa - Huila
-    </p>
+    <div class="contenedor-logo">
+      <img
+        src="escudo-colegio.png"
+        alt="Escudo Institución Educativa San José"
+        class="logo-institucional"
+      >
+    </div>
+
+    <div class="texto-encabezado">
+
+      <div class="nombre-colegio">
+        INSTITUCIÓN EDUCATIVA SAN JOSÉ
+      </div>
+
+      <div class="ubicacion">
+        Oporapa - Huila
+      </div>
+
+      <div class="titulo-sistema">
+        ASISTENCIA QR
+      </div>
+
+    </div>
+
+    <div class="contenedor-logo">
+      <img
+        src="escudo-huila.png"
+        alt="Escudo Gobernación del Huila"
+        class="logo-institucional"
+      >
+    </div>
 
   </div>
+
+</div>
 
 
   <div class="tarjeta">
