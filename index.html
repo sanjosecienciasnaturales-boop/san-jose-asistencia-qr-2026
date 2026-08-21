@@ -1,369 +1,524 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b3d71">
+  <title>Control de Ingreso - San José</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Asistencia QR - San José</title>
-
-  <script
-    src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
-  </script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <style>
+    :root {
+      --azul-900: #082f5b;
+      --azul-800: #0b3d71;
+      --azul-700: #155b99;
+      --azul-500: #2685d8;
+      --blanco: #ffffff;
+      --texto: #172033;
+      --verde: #2e7d32;
+      --naranja: #ef6c00;
+      --rojo: #c62828;
+      --amarillo: #f2b705;
+    }
 
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
     }
 
     body {
-      margin: 0;
-      background: #f4f7fb;
-      font-family: Arial, sans-serif;
-      color: #172033;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      background: var(--azul-800);
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 31, 68, .18) 0%,
+          rgba(10, 74, 132, .18) 45%,
+          rgba(4, 34, 76, .34) 100%
+        ),
+        url("./fondo-institucional.png") center center / cover no-repeat;
+      transform: scale(1.015);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(
+        180deg,
+        rgba(4, 35, 77, .10),
+        rgba(4, 35, 77, .24)
+      );
+      pointer-events: none;
     }
 
     .contenedor {
-      width: 100%;
-      max-width: 650px;
-      margin: auto;
+      width: min(100%, 660px);
+      margin: 0 auto;
       padding: 18px;
     }
 
+    /* ---------- Encabezado ---------- */
+
     .encabezado {
-  background: #174a7c;
-  color: white;
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 18px;
-}
+      background: rgba(8, 55, 105, .94);
+      color: white;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 24px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 16px 38px rgba(0, 28, 67, .28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
 
-   .encabezado-institucional {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
+    .encabezado-institucional {
+      display: grid;
+      grid-template-columns: 78px 1fr 78px;
+      align-items: center;
+      gap: 12px;
+    }
 
-.contenedor-logo {
-  width: 88px;
-  height: 88px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    .contenedor-logo {
+      width: 78px;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 16px;
+      padding: 5px;
+      box-shadow: 0 5px 16px rgba(0,0,0,.14);
+    }
 
-  background: white;
-  border-radius: 14px;
-  padding: 5px;
-}
+    .logo-institucional {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-.logo-institucional {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+    .texto-encabezado {
+      min-width: 0;
+      text-align: center;
+    }
 
-.texto-encabezado {
-  flex: 1;
-  text-align: center;
-}
+    .nombre-colegio {
+      font-size: 15px;
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
 
-.nombre-colegio {
-  font-size: 19px;
-  font-weight: bold;
-  line-height: 1.2;
-}
+    .ubicacion {
+      margin-top: 4px;
+      font-size: 12px;
+      opacity: .9;
+    }
 
-.ubicacion {
-  font-size: 15px;
-  margin-top: 4px;
-}
+    .titulo-sistema {
+      margin-top: 10px;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .5px;
+    }
 
-.titulo-sistema {
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 10px;
-}
+    .subtitulo-sistema {
+      margin-top: 6px;
+      font-size: 12px;
+      opacity: .85;
+    }
 
-@media (max-width: 500px) {
-
-  .contenedor-logo {
-    width: 66px;
-    height: 66px;
-    border-radius: 10px;
-  }
-
-  .nombre-colegio {
-    font-size: 14px;
-  }
-
-  .ubicacion {
-    font-size: 12px;
-  }
-
-  .titulo-sistema {
-    font-size: 20px;
-  }
-
-  .encabezado {
-    padding: 12px;
-  }
-}
+    /* ---------- Tarjetas ---------- */
 
     .tarjeta {
-      background: white;
-      border-radius: 18px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: 22px;
       padding: 20px;
       margin-bottom: 16px;
-      box-shadow:
-        0 5px 20px rgba(0,0,0,.09);
+      box-shadow: 0 16px 36px rgba(0, 33, 74, .22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .titulo-tarjeta {
+      margin: 0 0 4px;
+      color: var(--azul-900);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .ayuda-tarjeta {
+      margin: 0 0 16px;
+      color: #607085;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .campo {
+      margin-top: 13px;
     }
 
     label {
-      display: block;
-      font-weight: bold;
-      margin-top: 12px;
-      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #23354b;
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
-      padding: 14px;
-      border: 1px solid #ccd5df;
-      border-radius: 10px;
-      font-size: 17px;
-      background: white;
+      min-height: 52px;
+      padding: 13px 14px;
+      border: 1px solid #c9d5e3;
+      border-radius: 13px;
+      background: rgba(255,255,255,.98);
+      color: #172033;
+      font-size: 16px;
+      outline: none;
+      transition: .2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--azul-500);
+      box-shadow: 0 0 0 4px rgba(38,133,216,.12);
     }
 
     button {
       width: 100%;
-      padding: 17px;
+      min-height: 54px;
       margin-top: 18px;
       border: none;
-      border-radius: 12px;
-      background: #174a7c;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--azul-800), #1673bd);
       color: white;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: .3px;
       cursor: pointer;
+      box-shadow: 0 10px 24px rgba(12, 76, 135, .24);
+      transition: transform .15s ease, opacity .15s ease;
     }
 
-    button:disabled {
-      opacity: .55;
+    button:active { transform: scale(.99); }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ---------- Escáner ---------- */
+
+    .tarjeta-scanner {
+      padding: 16px;
     }
 
     #estadoCamara {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 42px;
+      margin: 0 0 12px;
+      border-radius: 12px;
+      background: #edf3f9;
+      color: #516479;
+      font-weight: 800;
       text-align: center;
-      font-weight: bold;
-      margin: 15px 0;
+      padding: 9px 12px;
+    }
+
+    #estadoCamara.activo {
+      background: #e8f5ec;
+      color: #1b6f3a;
+    }
+
+    #estadoCamara.procesando {
+      background: #fff4dc;
+      color: #8a5a00;
+    }
+
+    .marco-scanner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #0a2340;
+      border: 2px solid rgba(35, 118, 188, .28);
+      min-height: 250px;
+    }
+
+    .marco-scanner::before,
+    .marco-scanner::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      z-index: 5;
+      pointer-events: none;
+      border-radius: 15px;
+    }
+
+    .marco-scanner::before {
+      border:
+        3px solid transparent;
+      background:
+        linear-gradient(#34c759,#34c759) left top / 46px 4px no-repeat,
+        linear-gradient(#34c759,#34c759) left top / 4px 46px no-repeat,
+        linear-gradient(#34c759,#34c759) right top / 46px 4px no-repeat,
+        linear-gradient(#34c759,#34c759) right top / 4px 46px no-repeat,
+        linear-gradient(#34c759,#34c759) left bottom / 46px 4px no-repeat,
+        linear-gradient(#34c759,#34c759) left bottom / 4px 46px no-repeat,
+        linear-gradient(#34c759,#34c759) right bottom / 46px 4px no-repeat,
+        linear-gradient(#34c759,#34c759) right bottom / 4px 46px no-repeat;
     }
 
     #reader {
       width: 100%;
+      min-height: 250px;
       overflow: hidden;
-      border-radius: 15px;
+      border-radius: 16px;
     }
+
+    #reader video {
+      border-radius: 16px !important;
+      object-fit: cover !important;
+    }
+
+    /* ---------- Resultado ---------- */
 
     #resultado {
       display: none;
-      margin-top: 18px;
+      margin-top: 14px;
       padding: 20px;
-      border-radius: 15px;
+      border-radius: 18px;
       text-align: center;
+      box-shadow: 0 8px 22px rgba(0,0,0,.08);
     }
 
     .resultado-verde {
       display: block !important;
-      background: #e4f7e9;
-      border: 2px solid #27894c;
-      color: #145c30;
+      background: #e5f6ea;
+      border: 2px solid #2e7d32;
+      color: #145b2b;
     }
 
     .resultado-naranja {
       display: block !important;
-      background: #fff4df;
-      border: 2px solid #df8b16;
-      color: #744509;
+      background: #fff1df;
+      border: 2px solid #ef6c00;
+      color: #7d3e00;
     }
 
     .resultado-amarillo {
       display: block !important;
-      background: #fff8cf;
-      border: 2px solid #c69b00;
-      color: #685200;
+      background: #fff8d9;
+      border: 2px solid #d29e00;
+      color: #6e5200;
     }
 
     .resultado-rojo {
       display: block !important;
       background: #fde8e8;
-      border: 2px solid #c93d3d;
-      color: #7b1e1e;
+      border: 2px solid #c62828;
+      color: #7d1c1c;
     }
 
     .estado-grande {
       font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 9px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      letter-spacing: .25px;
     }
 
     .nombre {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 7px;
+      line-height: 1.25;
     }
 
     .detalle {
-      font-size: 17px;
       margin-top: 5px;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
-    .procesando {
-      color: #9a6200;
+    .pie {
+      padding: 8px 4px 18px;
+      text-align: center;
+      color: rgba(255,255,255,.82);
+      font-size: 11px;
+      text-shadow: 0 1px 2px rgba(0,0,0,.25);
     }
 
-    .activo {
-      color: #197840;
-    }
+    @media (max-width: 500px) {
+      .contenedor { padding: 11px; }
 
+      .encabezado {
+        border-radius: 20px;
+        padding: 12px;
+      }
+
+      .encabezado-institucional {
+        grid-template-columns: 58px 1fr 58px;
+        gap: 8px;
+      }
+
+      .contenedor-logo {
+        width: 58px;
+        height: 58px;
+        border-radius: 12px;
+        padding: 4px;
+      }
+
+      .nombre-colegio { font-size: 12px; }
+      .ubicacion { font-size: 10px; }
+      .titulo-sistema {
+        margin-top: 7px;
+        font-size: 19px;
+      }
+      .subtitulo-sistema { font-size: 10px; }
+
+      .tarjeta {
+        padding: 16px;
+        border-radius: 19px;
+      }
+
+      input, select {
+        min-height: 48px;
+        font-size: 15px;
+      }
+
+      button {
+        min-height: 51px;
+        font-size: 15px;
+      }
+
+      .nombre { font-size: 20px; }
+      .estado-grande { font-size: 20px; }
+    }
   </style>
-
 </head>
-
 
 <body>
 
 <div class="contenedor">
 
+  <header class="encabezado">
+    <div class="encabezado-institucional">
 
-<div class="encabezado">
+      <div class="contenedor-logo">
+        <img
+          src="./escudo-colegio.png"
+          alt="Escudo Institución Educativa San José"
+          class="logo-institucional"
+        >
+      </div>
 
-  <div class="encabezado-institucional">
+      <div class="texto-encabezado">
+        <div class="nombre-colegio">
+          INSTITUCIÓN EDUCATIVA SAN JOSÉ
+        </div>
+        <div class="ubicacion">
+          Oporapa - Huila
+        </div>
+        <div class="titulo-sistema">
+          CONTROL DE INGRESO
+        </div>
+        <div class="subtitulo-sistema">
+          Sistema de asistencia QR
+        </div>
+      </div>
 
-    <div class="contenedor-logo">
-      <img
-        src="escudo-colegio.png"
-        alt="Escudo Institución Educativa San José"
-        class="logo-institucional"
+      <div class="contenedor-logo">
+        <img
+          src="./escudo-huila.png"
+          alt="Escudo Gobernación del Huila"
+          class="logo-institucional"
+        >
+      </div>
+
+    </div>
+  </header>
+
+
+  <section class="tarjeta">
+    <h2 class="titulo-tarjeta">Registro de entrada</h2>
+    <p class="ayuda-tarjeta">
+      Seleccione la tablet, identifique al monitor y habilite el escáner.
+    </p>
+
+    <div class="campo">
+      <label for="tablet">📱 Tablet</label>
+      <select id="tablet">
+        <option value="TABLET-01">TABLET-01</option>
+        <option value="TABLET-02">TABLET-02</option>
+        <option value="TABLET-03">TABLET-03</option>
+        <option value="TABLET-04">TABLET-04</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="monitor">👤 Monitor responsable</label>
+      <input
+        id="monitor"
+        type="text"
+        autocomplete="off"
+        placeholder="Nombre del monitor"
       >
     </div>
 
-    <div class="texto-encabezado">
-
-      <div class="nombre-colegio">
-        INSTITUCIÓN EDUCATIVA SAN JOSÉ
-      </div>
-
-      <div class="ubicacion">
-        Oporapa - Huila
-      </div>
-
-      <div class="titulo-sistema">
-        ASISTENCIA QR
-      </div>
-
-    </div>
-
-    <div class="contenedor-logo">
-      <img
-        src="escudo-huila.png"
-        alt="Escudo Gobernación del Huila"
-        class="logo-institucional"
+    <div class="campo">
+      <label for="pin">🔐 PIN del sistema</label>
+      <input
+        id="pin"
+        type="password"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Digite el PIN"
       >
     </div>
-
-  </div>
-
-</div>
-
-
-  <div class="tarjeta">
-
-    <label>
-      Tablet
-    </label>
-
-    <select id="tablet">
-
-      <option value="TABLET-01">
-        TABLET-01
-      </option>
-
-      <option value="TABLET-02">
-        TABLET-02
-      </option>
-
-      <option value="TABLET-03">
-        TABLET-03
-      </option>
-
-      <option value="TABLET-04">
-        TABLET-04
-      </option>
-
-    </select>
-
-
-    <label>
-      Monitor responsable
-    </label>
-
-    <input
-      id="monitor"
-      type="text"
-      placeholder="Nombre del monitor"
-      autocomplete="off"
-    >
-
-
-    <label>
-      PIN del sistema
-    </label>
-
-    <input
-      id="pin"
-      type="password"
-      inputmode="numeric"
-      placeholder="Digite el PIN"
-      autocomplete="off"
-    >
-
 
     <button
       id="btnCamara"
+      type="button"
       onclick="iniciarCamara()"
     >
-      INICIAR ESCÁNER
+      📷 INICIAR ESCÁNER
     </button>
+  </section>
 
-  </div>
 
+  <section class="tarjeta tarjeta-scanner">
+    <div id="estadoCamara">Cámara detenida</div>
 
-  <div class="tarjeta">
-
-    <div id="estadoCamara">
-      Cámara detenida
+    <div class="marco-scanner">
+      <div id="reader"></div>
     </div>
 
-    <div id="reader"></div>
-
     <div id="resultado"></div>
+  </section>
 
+
+  <div class="pie">
+    Institución Educativa San José · Oporapa, Huila
   </div>
 
 </div>
 
-
-<!--
-FORMULARIO OCULTO
--->
 
 <form
   id="formRegistro"
@@ -372,55 +527,30 @@ FORMULARIO OCULTO
   action="https://script.google.com/macros/s/AKfycbyIEJ1RK9NkNueGqMbEoC1dCgASGjliM1mTCpU3yaBtTGbSoSY0es2OW7jwVkHRjeviYw/exec"
   style="display:none;"
 >
-
-  <input
-    id="fToken"
-    name="token"
-    type="hidden"
-  >
-
-  <input
-    id="fTablet"
-    name="tablet"
-    type="hidden"
-  >
-
-  <input
-    id="fMonitor"
-    name="monitor"
-    type="hidden"
-  >
-
-  <input
-    id="fPin"
-    name="pin"
-    type="hidden"
-  >
-
+  <input id="fToken" name="token" type="hidden">
+  <input id="fTablet" name="tablet" type="hidden">
+  <input id="fMonitor" name="monitor" type="hidden">
+  <input id="fPin" name="pin" type="hidden">
 </form>
-
 
 <iframe
   name="respuestaBackend"
-  style="display:none;">
-</iframe>
+  style="display:none;"
+  title="Respuesta del sistema"
+></iframe>
 
 
 <script>
-
   let lector = null;
-
   let camaraIniciada = false;
-
   let procesando = false;
-
   let ultimoToken = "";
-
   let ultimaLectura = 0;
+  let temporizadorResultado = null;
 
 
   async function iniciarCamara() {
-alert("BOTÓN FUNCIONANDO");
+
     const monitor =
       document
         .getElementById("monitor")
@@ -435,21 +565,17 @@ alert("BOTÓN FUNCIONANDO");
 
 
     if (!monitor) {
-
       mostrarError(
-        "Debe escribir el nombre del monitor."
+        "Debe escribir el nombre del monitor responsable."
       );
-
       return;
     }
 
 
     if (!pin) {
-
       mostrarError(
         "Debe digitar el PIN del sistema."
       );
-
       return;
     }
 
@@ -464,11 +590,20 @@ alert("BOTÓN FUNCIONANDO");
         "estadoCamara"
       );
 
+    const boton =
+      document.getElementById(
+        "btnCamara"
+      );
+
+
+    ocultarResultado();
+
+    boton.disabled = true;
 
     estado.className = "";
 
     estado.innerText =
-      "Solicitando permiso para utilizar la cámara...";
+      "Solicitando acceso a la cámara...";
 
 
     try {
@@ -485,7 +620,6 @@ alert("BOTÓN FUNCIONANDO");
 
         {
           fps: 10,
-
           qrbox: {
             width: 250,
             height: 250
@@ -495,6 +629,7 @@ alert("BOTÓN FUNCIONANDO");
         codigoDetectado,
 
         function() {
+          // Los fallos normales de lectura se ignoran.
         }
 
       );
@@ -502,37 +637,31 @@ alert("BOTÓN FUNCIONANDO");
 
       camaraIniciada = true;
 
-
-      document
-        .getElementById("btnCamara")
-        .style.display = "none";
-
+      boton.style.display = "none";
 
       estado.className =
         "activo";
 
-
       estado.innerText =
-        "ESCÁNER ACTIVO - Acerque el código QR";
+        "🟢 ESCÁNER ACTIVO · Acerque el código QR";
 
 
     } catch (error) {
 
       console.error(error);
 
+      boton.disabled = false;
 
-      mostrarError(
-        "No fue posible abrir la cámara."
-      );
-
+      estado.className = "";
 
       estado.innerText =
-        "Revise los permisos de cámara.";
+        "No se pudo iniciar la cámara.";
 
+      mostrarError(
+        "Revise los permisos de cámara del navegador e inténtelo nuevamente."
+      );
     }
-
   }
-
 
 
   function codigoDetectado(codigo) {
@@ -544,24 +673,20 @@ alert("BOTÓN FUNCIONANDO");
 
 
     if (!token.startsWith("SJ-")) {
-
       mostrarError(
         "Este código QR no pertenece al sistema."
       );
-
       return;
     }
 
 
-    const ahora =
-      Date.now();
+    const ahora = Date.now();
 
 
     if (
       token === ultimoToken &&
       ahora - ultimaLectura < 8000
     ) {
-
       return;
     }
 
@@ -572,9 +697,7 @@ alert("BOTÓN FUNCIONANDO");
 
 
     procesando = true;
-
     ultimoToken = token;
-
     ultimaLectura = ahora;
 
 
@@ -583,13 +706,11 @@ alert("BOTÓN FUNCIONANDO");
         .getElementById("tablet")
         .value;
 
-
     const monitor =
       document
         .getElementById("monitor")
         .value
         .trim();
-
 
     const pin =
       document
@@ -602,16 +723,13 @@ alert("BOTÓN FUNCIONANDO");
       .getElementById("fToken")
       .value = token;
 
-
     document
       .getElementById("fTablet")
       .value = tablet;
 
-
     document
       .getElementById("fMonitor")
       .value = monitor;
-
 
     document
       .getElementById("fPin")
@@ -627,41 +745,32 @@ alert("BOTÓN FUNCIONANDO");
     estado.className =
       "procesando";
 
-
     estado.innerText =
-      "REGISTRANDO ASISTENCIA...";
+      "⏳ REGISTRANDO ASISTENCIA...";
 
 
     document
       .getElementById("formRegistro")
       .submit();
-// Seguro de recuperación:
-// si por alguna razón Google no devuelve
-// la confirmación, libera el escáner.
 
-setTimeout(function() {
 
-  if (procesando) {
+    // Seguro: si Google no devuelve confirmación,
+    // el escáner se libera para no quedar bloqueado.
+    setTimeout(function() {
 
-    procesando = false;
+      if (procesando) {
 
-    const estado =
-      document.getElementById(
-        "estadoCamara"
-      );
+        procesando = false;
 
-    estado.className =
-      "activo";
+        estado.className =
+          "activo";
 
-    estado.innerText =
-      "LISTO PARA EL SIGUIENTE ESTUDIANTE";
+        estado.innerText =
+          "🟢 LISTO PARA EL SIGUIENTE ESTUDIANTE";
+      }
 
+    }, 8000);
   }
-
-}, 8000);
-    }
-  
-
 
 
   window.addEventListener(
@@ -671,15 +780,13 @@ setTimeout(function() {
       if (
         !event.data ||
         event.data.origen !==
-        "ASISTENCIA_SAN_JOSE"
+          "ASISTENCIA_SAN_JOSE"
       ) {
-
         return;
       }
 
 
       procesando = false;
-
 
       const respuesta =
         event.data.respuesta;
@@ -690,19 +797,16 @@ setTimeout(function() {
       );
 
 
-      document
-        .getElementById(
+      const estado =
+        document.getElementById(
           "estadoCamara"
-        )
-        .className = "activo";
+        );
 
+      estado.className =
+        "activo";
 
-      document
-        .getElementById(
-          "estadoCamara"
-        )
-        .innerText =
-          "LISTO PARA EL SIGUIENTE ESTUDIANTE";
+      estado.innerText =
+        "🟢 LISTO PARA EL SIGUIENTE ESTUDIANTE";
 
 
       if (
@@ -710,13 +814,10 @@ setTimeout(function() {
         respuesta &&
         respuesta.ok
       ) {
-
         navigator.vibrate(120);
       }
-
     }
   );
-
 
 
   function mostrarRespuesta(r) {
@@ -728,11 +829,9 @@ setTimeout(function() {
 
 
     if (!r) {
-
       mostrarError(
         "No se recibió respuesta del sistema."
       );
-
       return;
     }
 
@@ -743,86 +842,88 @@ setTimeout(function() {
     let titulo =
       "ERROR";
 
+    let icono =
+      "❌";
+
 
     if (
       r.ok &&
       r.tipo === "PUNTUAL"
     ) {
-
       clase =
         "resultado-verde";
-
       titulo =
-        "PUNTUAL";
-
+        "INGRESO REGISTRADO · PUNTUAL";
+      icono =
+        "✅";
     }
-
 
     else if (
       r.ok &&
       r.tipo === "RETARDO"
     ) {
-
       clase =
         "resultado-naranja";
-
       titulo =
-        "RETARDO";
-
+        "RETARDO REGISTRADO";
+      icono =
+        "⏰";
     }
-
 
     else if (
       r.ok &&
-      r.tipo ===
-        "PENDIENTE_VALIDACION"
+      r.tipo === "PENDIENTE_VALIDACION"
     ) {
-
       clase =
         "resultado-amarillo";
-
       titulo =
         "PENDIENTE DE VALIDACIÓN";
-
+      icono =
+        "⚠️";
     }
-
 
     else if (
       r.tipo === "DUPLICADO"
     ) {
-
       clase =
         "resultado-naranja";
-
       titulo =
         "YA REGISTRADO";
-
+      icono =
+        "⚠️";
     }
-
 
     else if (
       r.tipo === "PIN"
     ) {
-
       clase =
         "resultado-rojo";
-
       titulo =
         "PIN INCORRECTO";
-
+      icono =
+        "🔒";
     }
-
 
     else if (
       r.tipo === "INVALIDO"
     ) {
-
       clase =
         "resultado-rojo";
-
       titulo =
         "QR NO VÁLIDO";
+      icono =
+        "❌";
+    }
 
+    else if (
+      r.tipo === "NO_HABILITADO"
+    ) {
+      clase =
+        "resultado-rojo";
+      titulo =
+        "ESTUDIANTE NO HABILITADO";
+      icono =
+        "⛔";
     }
 
 
@@ -831,18 +932,17 @@ setTimeout(function() {
 
 
     caja.innerHTML = `
-
       <div class="estado-grande">
-        ${escapar(titulo)}
+        ${icono} ${escapar(titulo)}
       </div>
 
       ${
         r.estudiante
         ?
         `
-        <div class="nombre">
-          ${escapar(r.estudiante)}
-        </div>
+          <div class="nombre">
+            ${escapar(r.estudiante)}
+          </div>
         `
         :
         ""
@@ -852,9 +952,9 @@ setTimeout(function() {
         r.grupo
         ?
         `
-        <div class="detalle">
-          Grupo: ${escapar(r.grupo)}
-        </div>
+          <div class="detalle">
+            Grupo: <strong>${escapar(r.grupo)}</strong>
+          </div>
         `
         :
         ""
@@ -864,9 +964,9 @@ setTimeout(function() {
         r.hora
         ?
         `
-        <div class="detalle">
-          Hora: ${escapar(r.hora)}
-        </div>
+          <div class="detalle">
+            Hora: <strong>${escapar(r.hora)}</strong>
+          </div>
         `
         :
         ""
@@ -875,42 +975,73 @@ setTimeout(function() {
       <div class="detalle">
         ${escapar(r.mensaje || "")}
       </div>
-
     `;
 
+
+    if (temporizadorResultado) {
+      clearTimeout(
+        temporizadorResultado
+      );
+    }
+
+
+    temporizadorResultado =
+      setTimeout(
+        ocultarResultado,
+        6000
+      );
   }
 
 
-
   function mostrarError(mensaje) {
+
+    procesando = false;
 
     const caja =
       document.getElementById(
         "resultado"
       );
 
-
     caja.className =
       "resultado-rojo";
 
-
     caja.innerHTML = `
-
       <div class="estado-grande">
-        ERROR
+        ❌ ERROR
       </div>
-
       <div class="detalle">
         ${escapar(mensaje)}
       </div>
-
     `;
 
 
-    procesando = false;
+    if (temporizadorResultado) {
+      clearTimeout(
+        temporizadorResultado
+      );
+    }
 
+    temporizadorResultado =
+      setTimeout(
+        ocultarResultado,
+        6000
+      );
   }
 
+
+  function ocultarResultado() {
+
+    const caja =
+      document.getElementById(
+        "resultado"
+      );
+
+    caja.className = "";
+
+    caja.innerHTML = "";
+
+    caja.style.display = "none";
+  }
 
 
   function escapar(texto) {
@@ -918,17 +1049,12 @@ setTimeout(function() {
     const elemento =
       document.createElement("div");
 
-
     elemento.textContent =
       String(texto || "");
 
-
     return elemento.innerHTML;
-
   }
-
 </script>
 
 </body>
-
 </html>
